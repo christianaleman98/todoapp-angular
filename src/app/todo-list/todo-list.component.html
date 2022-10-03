@@ -1,0 +1,145 @@
+<div class="container">
+  <nav class="navbar navbar-light bg-primary">
+    <div class="container-fluid">
+      <h1>Todo List App</h1>
+      <div class="d-flex">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#todoAddModal" class="btn btn-success">
+          Agregar Tarea
+        </button>
+      </div>
+    </div>
+  </nav>
+  <br/>
+  <div class="form-group">
+    <input type="text" [(ngModel)]="filterPost" name="filterPost" id="filterPost" class="form-control" placeholder="Filtrar Status To Do...">
+  </div>
+  <br/>
+  <div class="table-responsive">
+    <table class="table table-light">
+      <thead>
+        <tr>
+          <th scope="col">Tarea</th>
+          <th scope="col">Status</th>
+          <th scope="col">Prioridad</th>
+          <th scope="col">Responsable</th>
+          <th scope="col">Fecha Inicio</th>
+          <th scope="col">Fecha Fin</th>
+          <th scope="col">Fecha Creación</th>
+          <th scope="col">Fecha Actualización</th>
+          <th scope="col">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of todoData | filter:filterPost">
+          <td>{{row.tarea}}</td>
+          <td>{{row.status}}</td>
+          <td>{{row.prioridad}}</td>
+          <td>{{row.responsable}}</td>
+          <td>{{row.fechaInicio}}</td>
+          <td>{{row.fechaFin}}</td>
+          <td>{{row.createdAt}}</td>
+          <td>{{row.updatedAd}}</td>
+          <td>
+            <button (click)="onEdit(row)" class="btn btn-outline-info mx-2" data-bs-toggle="modal" data-bs-target="#todoEditModal">Editar</button>
+            <button (click)="deteleTodo(row)" class="btn btn-outline-danger my-2">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal Agregar ToDo-->
+  <div class="modal fade" id="todoAddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">To Do Detalles</h5>
+          <button type="button" (click)="resetModelCancel()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formValue">
+            <div class="mb-3">
+              <label class="form-label">Tarea</label>
+              <input type="text" formControlName="tarea" class="form-control" placeholder="Nombre de la tarea"/>
+            </div>
+            <div class="mb-3">
+                <label for="form-label">Fecha Inicio</label>
+                <input type="date" formControlName="fechaInicio" name="fechaInicioTarea" id="fechaInicioTarea" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="form-label">Fecha Final</label>
+                <input type="date" formControlName="fechaFin" name="fechaFinalTarea" id="fechaFinalTarea" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Prioridad</label>
+                <select class="form-control" formControlName="prioridad">
+                    <option value ="" disabled selected>Seleccione una opción</option>
+                    <option value="Baja">Baja</option>
+                    <option value="Media">Media</option>
+                    <option value="Alta">Alta</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Responsable</label>
+                <input type="text" formControlName="responsable" class="form-control" placeholder="Nombre del Responsable"/>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancel" (click)="resetModelCancel()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" (click)="postTodoDetails()" class="btn btn-primary">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="todoEditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">To Do Detalles</h5>
+          <button type="button" (click)="resetModelCancel()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formValue">
+            <div class="mb-3">
+              <label class="form-label">Tarea</label>
+              <input type="text" formControlName="tarea" class="form-control" placeholder="Nombre de la tarea"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Status</label>
+              <select class="form-control" formControlName="status">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Finalizado">Finalizado</option>
+              </select>
+            </div>
+            <div class="mb-3">
+                <label for="form-label">Fecha Inicio</label>
+                <input type="date" formControlName="fechaInicio" name="fechaInicioTarea" id="fechaInicioTarea" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="form-label">Fecha Final</label>
+                <input type="date" formControlName="fechaFin" name="fechaFinalTarea" id="fechaFinalTarea" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Prioridad</label>
+                <select class="form-control" formControlName="prioridad">
+                    <option value="Baja">Baja</option>
+                    <option value="Media">Media</option>
+                    <option value="Alta">Alta</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Responsable</label>
+                <input type="text" formControlName="responsable" class="form-control" placeholder="Nombre del Responsable"/>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancelar" (click)="resetModelCancel()" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" (click)="updateTodoDetails()" class="btn btn-primary">Modificar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
