@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators'
+import { Observable } from 'rxjs';
+import { TodoModel } from '../todo-list/todo-list.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,8 @@ export class ApiService {
     return this.http.post<any>("http://localhost:3000/todos",data).pipe(map((res:any)=>{return res;}))
   }
 
-  getTodos(){
-    return this.http.get<any>("http://localhost:3000/todos").pipe(map((res:any)=>{return res;}))
+  getTodos():Observable<Array<TodoModel>>{
+    return this.http.get<Array<TodoModel>>("http://localhost:3000/todos").pipe(map((res:any)=>{return res;}))
   }
 
   updateTodo(data: any,id:number){

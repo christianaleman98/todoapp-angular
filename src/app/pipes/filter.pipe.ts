@@ -4,12 +4,13 @@ import {Pipe,PipeTransform} from '@angular/core';
 })
 export class FilterPipe implements PipeTransform{
     transform(value:any,arg: any):any{
+        if(arg === '' || arg.length <3) return value;
         const resultData =[];
         for(const data of value){
-            if(data.status.indexOf(arg) > -1){
+            if(data.status.toLowerCase().indexOf(arg.toLowerCase()) > -1){
                 resultData.push(data)
             }
-        }
+        };
         return resultData;
     }
 }

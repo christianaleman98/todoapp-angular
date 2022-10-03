@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {FormBuilder,FormGroup} from '@angular/forms'
 import { TodoModel } from './todo-list.model';
 import { ApiService } from '../shared/api.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css']
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit,OnDestroy {
 
   formValue !: FormGroup;
   todoModelObject: TodoModel = new TodoModel();
-  todoData !:any;
+  todoData !:Array<TodoModel>;
   filterPost = '';
+  subs!:Subscription
 
   constructor(private formbuilder: FormBuilder,private api:ApiService) { }
 
@@ -35,6 +37,7 @@ export class TodoListComponent implements OnInit {
     this.todoModelObject.prioridad = this.formValue.value.prioridad;
     this.todoModelObject.responsable = this.formValue.value.responsable;
 
+    this.subs.add(
     this.api.postTodo(this.todoModelObject)
     .subscribe(res=>{
       alert("To Do agregado correctamente.");
@@ -46,6 +49,7 @@ export class TodoListComponent implements OnInit {
     err=>{
       alert("No pudo agregarse la tarea")
     })
+    );
   }
 
   getAllTodos(){
@@ -93,4 +97,7 @@ export class TodoListComponent implements OnInit {
     this.formValue.reset();
   }
 
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 }
